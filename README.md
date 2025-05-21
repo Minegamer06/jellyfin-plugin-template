@@ -14,6 +14,8 @@ Awesome! This guide is for you. Jellyfin plugins are written using the dotnet st
 
    [Mono Develop](https://www.monodevelop.com)
 
+   [Rider Non-Commercial](https://www.jetbrains.com/rider/)
+
 ## 0.5. Quickstarts
 
 We have a number of quickstart options available to speed you along the way.
