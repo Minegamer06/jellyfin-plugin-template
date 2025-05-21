@@ -52,7 +52,7 @@ namespace Jellyfin.Plugin.Template.LibaryExamples
             if (movies?.Any(m => m?.IsHD ?? false) ?? false)
             {
                 Movie movie = movies.First(m => m?.IsHD ?? false)!;
-                if (movie.Tags.Any(t => t == "Mini Movie"))
+                if (!movie.Tags.Any(t => t == "Mini Movie"))
                 {
                     movie.AddTag("Mini Movie");
                 }
@@ -69,11 +69,14 @@ namespace Jellyfin.Plugin.Template.LibaryExamples
 
             // Collection Manager
             _logger.LogInformation("MSG - {LibaryInfo} - Collection Manager:", nameof(LibaryInfo));
-            var collections = _libraryManager.GetItemList(new InternalItemsQuery() { IncludeItemTypes = [BaseItemKind.CollectionFolder] }).Select(i => i as CollectionFolder).ToList();
+            var collections = _libraryManager.GetItemList(new InternalItemsQuery() { IncludeItemTypes = [BaseItemKind.BoxSet] }).Select(s => s as BoxSet).ToList();
             var collection = collections.FirstOrDefault(c => c is not null);
+            var collectionContent = collection!.GetRecursiveChildren();
+
             if (collection is not null)
             {
-                _logger.LogInformation("MSG - {LibaryInfo} - Collection Info: {Collection}", nameof(LibaryInfo), collection.Name);
+               await _collectionManager.AddToCollectionAsync(collection.Id, movies!.Select(x => x!.Id)).ConfigureAwait(false);
+               _logger.LogInformation("MSG - {LibaryInfo} - Collection Info: {Collection}", nameof(LibaryInfo), collection.Name);
             }
 
             _logger.LogInformation($"Stop - {nameof(LibaryInfo)}");

@@ -9,11 +9,16 @@ using Microsoft.Extensions.Logging;
 
 namespace Jellyfin.Plugin.Template.Authentication
 {
-    internal class ExampleAuthProvider : IAuthenticationProvider
+    /// <inheritdoc/>
+    public class ExampleAuthProvider : IAuthenticationProvider
     {
         private readonly ILogger<ExampleAuthProvider> _logger;
         private string _password;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ExampleAuthProvider"/> class.
+        /// </summary>
+        /// <param name="logger">Instance of the <see cref="ILogger{ExampleAuthProvider}"/> interface.</param>
         public ExampleAuthProvider(ILogger<ExampleAuthProvider> logger)
         {
             _logger = logger;
@@ -30,6 +35,7 @@ namespace Jellyfin.Plugin.Template.Authentication
         /// </summary>
         public bool IsEnabled => true;
 
+        /// <inheritdoc/>
         public async Task<ProviderAuthenticationResult> Authenticate(string username, string password)
         {
             _logger.LogTrace("Login - Start: {User}", username);
@@ -51,6 +57,7 @@ namespace Jellyfin.Plugin.Template.Authentication
             }
         }
 
+        /// <inheritdoc/>
         public async Task ChangePassword(User user, string newPassword)
         {
             _logger.LogTrace("Change PW - Start: {User}", user.Username);
@@ -59,6 +66,7 @@ namespace Jellyfin.Plugin.Template.Authentication
             _logger.LogTrace("Change PW - Complete: {User}", user.Username);
         }
 
+        /// <inheritdoc/>
         public bool HasPassword(User user)
         {
             return string.IsNullOrEmpty(_password);
